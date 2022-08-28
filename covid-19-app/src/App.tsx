@@ -2,10 +2,11 @@ import { Global, css } from '@emotion/react';
 import { useEffect, useState } from 'react';
 import CountryList from './components/CountryList';
 import GlobalInfo from './components/GlobalInfo';
-import type { ResponseData } from './types';
+import type { ResponseData, Country } from './types';
 
 const App: React.FC = () => {
   const [data, setData] = useState<ResponseData | undefined>(undefined);
+  const [activeCountries, setActiveCountries] = useState<Country[]>([]);
 
   const fetchData = async () => {
     const result = await fetch('https://api.covid19api.com/summary');
@@ -19,6 +20,21 @@ const App: React.FC = () => {
     fetchData();
   }, []);
 
+  const OnCountryClick = (country: Country) => {
+    const countryIndex = activeCountries.findIndex(
+      (activeCountry) => activeCountry.ID === country.ID
+    );
+
+    if (countryIndex > -1) {
+      const newActiveCountries = [...activeCountries];
+      newActiveCountries.splice(countryIndex, 1);
+
+      setActiveCountries(newActiveCountries);
+    } else {
+      setActiveCountries([...activeCountries, country]);
+    }
+  };
+
   return (
     <div>
       <Global
@@ -29,6 +45,11 @@ const App: React.FC = () => {
           }
         `}
       />
+
+      {activeCountries.map((aCountry) => (
+        <span>{aCountry.Country}</span>
+      ))}
+
       {data ? (
         <>
           <GlobalInfo
@@ -36,7 +57,10 @@ const App: React.FC = () => {
             newDeaths={data?.Global.NewDeaths}
             newRecovered={data?.Global.NewRecovered}
           />
-          <CountryList countries={data.Countries} />
+          <CountryList
+            countries={data.Countries}
+            onItemClick={OnCountryClick}
+          />
         </>
       ) : (
         'Loading.....'

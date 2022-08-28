@@ -4,6 +4,7 @@ import type { Country } from '../types';
 
 interface Props {
   countries: Country[];
+  onItemClick: (country: Country) => void;
 }
 
 const ListWrapper = styled.ul`
@@ -16,6 +17,7 @@ const ListItem = styled.li`
   list-style-type: none;
   flex: 0 0 50%;
   text-align: center;
+  cursor: pointer;
 
   @media (min-width: 420px) {
     flex: 0 0 33.33%;
@@ -28,11 +30,11 @@ const ListContent = styled.div`
   padding: 10px 0;
 `;
 
-const CountryList: React.FC<Props> = ({ countries }) => {
+const CountryList: React.FC<Props> = ({ countries, onItemClick }) => {
   return (
     <ListWrapper>
       {countries.map((country) => (
-        <ListItem key={country.ID}>
+        <ListItem key={country.ID} onClick={() => onItemClick(country)}>
           <ListContent>
             <h4>{country.Country}</h4>
             <div>New Confirmed : {country.NewConfirmed}</div>
