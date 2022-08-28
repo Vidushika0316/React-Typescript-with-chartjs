@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import CountryList from './components/CountryList';
 import GlobalInfo from './components/GlobalInfo';
-import type { ResponseData, Country } from './types';
+import type { ResponseData } from './types';
 
 const App: React.FC = () => {
   const [data, setData] = useState<ResponseData | undefined>(undefined);
