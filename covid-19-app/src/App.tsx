@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import GlobalInfo from './components/GlobalInfo';
 
 type Country = {
   Country: string;
@@ -48,7 +49,19 @@ const App: React.FC = () => {
     fetchData();
   }, []);
 
-  return <div>Global Covi-19 Data</div>;
+  return (
+    <div>
+      {data ? (
+        <GlobalInfo
+          newConfirmed={data?.Global.NewConfirmed}
+          newDeaths={data?.Global.NewDeaths}
+          newRecovered={data?.Global.NewRecovered}
+        />
+      ) : (
+        'Loading.....'
+      )}
+    </div>
+  );
 };
 
 export default App;
